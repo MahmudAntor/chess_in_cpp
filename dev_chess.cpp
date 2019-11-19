@@ -53,6 +53,8 @@ void move_new(string str)
     }
 }
 
+string position = "";
+
 void load_position()
 {
     int k = 0;
@@ -72,6 +74,11 @@ void load_position()
             //printf("set position = %d %d\n", sze*j, sze*i);
             k++;
         }
+    }
+
+    for(int i = 0; i<position.length(); i += 5)
+    {
+        move_new(position.substr(i,4));
     }
 }
 main()
@@ -112,6 +119,15 @@ main()
                 window.close();
             }
 
+            if(evnt.type == Event::KeyPressed)
+            {
+                if(evnt.key.code == Keyboard::BackSpace)
+                {
+                    position.erase(position.length()-5,5);
+                    load_position();
+                }
+            }
+
             if(evnt.type == Event::MouseButtonPressed)
             {
                 if(evnt.key.code == Mouse::Left)
@@ -137,7 +153,7 @@ main()
                     Vector2f p = fig[n].getPosition() + Vector2f(sze/2,sze/2);
                     new_pos = Vector2f( sze*int(p.x/sze), sze*int(p.y/sze));
                     str = to_chess_note(old_pos) + to_chess_note(new_pos);
-                    move_new(str);
+                    move_new(str); position += str + " ";
                     cout<<str<<endl;
                     fig[n].setPosition(new_pos);
                     //printf("%f %f %f %f\n", p.x, p.y, NewPos.x,NewPos.y);
